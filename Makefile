@@ -1,3 +1,5 @@
+# ---------------------------------------------------------------------------
+
 # Make-Script for plan-apply-destroy for three different zones:
 
 pull:
@@ -38,3 +40,5 @@ destroy-asi-s:
 
 cleanup:
 	find / -type d  -name ".terraform" -exec rm -rf {} \;
+
+# ---------------------------------------------------------------------------

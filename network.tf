@@ -1,4 +1,4 @@
-# -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Virtual Network
 resource "azurerm_virtual_network" "vnet" {
@@ -32,7 +32,7 @@ resource "azurerm_subnet" "subnet_3" {
   address_prefixes     = ["10.0.3.0/24"]
 }
 
-# -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Public IP for Network Interface
 resource "azurerm_public_ip" "pub_nic" {
@@ -56,7 +56,7 @@ resource "azurerm_network_interface" "example" {
   }
 }
 
-# -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Network Security Group
 resource "azurerm_network_security_group" "nsg" {
@@ -107,7 +107,7 @@ resource "azurerm_subnet_network_security_group_association" "nsg-sub" {
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
-# -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Public IP for Internet Gateway
 resource "azurerm_public_ip" "igw_ip" {
@@ -139,7 +139,7 @@ resource "azurerm_virtual_network_gateway" "igw" {
   }
 }
 
-# -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Public IP for Load Balancer
 resource "azurerm_public_ip" "example" {
@@ -191,7 +191,7 @@ resource "azurerm_lb_probe" "http" {
   interval_in_seconds = 5
 }
 
-# -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Traffic Manager Profile for Load Balancing
 resource "azurerm_traffic_manager_profile" "traffic_profile8250" {
@@ -222,4 +222,4 @@ resource "azurerm_traffic_manager_azure_endpoint" "endpoint" {
   target_resource_id = azurerm_public_ip.example.id
 }
 
-# -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
