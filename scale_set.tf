@@ -38,10 +38,4 @@ resource "azurerm_linux_virtual_machine_scale_set" "vm_ss" {
       load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.example.id]
     }
   }
-
-  automatic_instance_repair {
-    enabled      = true
-    grace_period = "PT10M"
-  }
-
 }

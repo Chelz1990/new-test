@@ -17,8 +17,8 @@ resource "azurerm_subnet" "subnet_1" {
 }
 
 # Subnet #2 for Internet Gateway
-resource "azurerm_subnet" "igw_subnet" {
-  name                 = "igw-subnet"
+resource "azurerm_subnet" "subnet_2" {
+  name                 = "GatewaySubnet"
   virtual_network_name = azurerm_virtual_network.vnet.name
   resource_group_name  = azurerm_resource_group.azure-project.name
   address_prefixes     = ["10.0.2.0/24"]
@@ -135,7 +135,7 @@ resource "azurerm_virtual_network_gateway" "igw" {
     name                          = "vnetGatewayConfig"
     public_ip_address_id          = azurerm_public_ip.igw_ip.id
     private_ip_address_allocation = "Dynamic"
-    subnet_id                     = azurerm_subnet.igw_subnet.id
+    subnet_id                     = azurerm_subnet.subnet_2.id
   }
 }
 
@@ -143,7 +143,7 @@ resource "azurerm_virtual_network_gateway" "igw" {
 
 # Public IP for Load Balancer
 resource "azurerm_public_ip" "example" {
-  name                = "PublicIPForLB"
+  name                = "PublicIPAddress"
   location            = var.location
   resource_group_name = azurerm_resource_group.azure-project.name
   allocation_method   = "Static"
