@@ -1,0 +1,2 @@
+name     = "azure-project"
+location = ""
