@@ -186,7 +186,7 @@ resource "azurerm_lb_probe" "http" {
   loadbalancer_id     = azurerm_lb.example.id
   name                = "http-running-probe"
   port                = 80
-  protocol            = "http"
+  protocol            = "Http"
   request_path        = "/index.html"
   number_of_probes    = 3
   interval_in_seconds = 5
@@ -197,7 +197,7 @@ resource "azurerm_lb_probe" "ssh" {
   loadbalancer_id     = azurerm_lb.example.id
   name                = "ssh-running-probe"
   port                = 22
-  protocol            = "ssh"
+  protocol            = "Tcp"
   request_path        = "/index.html"
   number_of_probes    = 3
   interval_in_seconds = 5
