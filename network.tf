@@ -143,7 +143,7 @@ resource "azurerm_virtual_network_gateway" "igw" {
 
 # Public IP for Load Balancer
 resource "azurerm_public_ip" "example" {
-  name                = "PublicIPAddress"
+  name                = "Public-IP"
   location            = var.location
   resource_group_name = azurerm_resource_group.azure-project.name
   allocation_method   = "Static"
@@ -154,12 +154,12 @@ resource "azurerm_public_ip" "example" {
 
 # Load Balancer (Front-End)
 resource "azurerm_lb" "example" {
-  name                = "PublicIPAddress"
+  name                = "Load-Balancer"
   location            = var.location
   resource_group_name = azurerm_resource_group.azure-project.name
 
   frontend_ip_configuration {
-    name                 = "PublicIPAddress"
+    name                 = "Public-IP"
     public_ip_address_id = azurerm_public_ip.example.id
   }
 }
@@ -177,7 +177,7 @@ resource "azurerm_lb_rule" "http" {
   protocol                       = "Tcp"
   frontend_port                  = 80
   backend_port                   = 80
-  frontend_ip_configuration_name = "PublicIPAddress"
+  frontend_ip_configuration_name = "Public-IP"
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.example.id]
   probe_id                       = azurerm_lb_probe.http.id
 }
