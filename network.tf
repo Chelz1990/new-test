@@ -179,18 +179,6 @@ resource "azurerm_lb_rule" "http" {
   probe_id                       = azurerm_lb_probe.http.id
 }
 
-# Load Balancer - Rule - SSH
-resource "azurerm_lb_rule" "ssh" {
-  loadbalancer_id                = azurerm_lb.example.id
-  name                           = "ssh"
-  protocol                       = "Tcp"
-  frontend_port                  = 22
-  backend_port                   = 22
-  frontend_ip_configuration_name = "PublicIPAddress"
-  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.example.id]
-  probe_id                       = azurerm_lb_probe.ssh.id
-}
-
 # Load Balancer - Probe - HTTP
 resource "azurerm_lb_probe" "http" {
   loadbalancer_id     = azurerm_lb.example.id
