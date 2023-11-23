@@ -10,7 +10,7 @@ resource "azurerm_virtual_network" "vnet" {
 
 # Subnet #1 for NSG
 resource "azurerm_subnet" "subnet_1" {
-  name                 = "subnet-1"
+  name                 = "subnet_1"
   virtual_network_name = azurerm_virtual_network.vnet.name
   resource_group_name  = azurerm_resource_group.azure-project.name
   address_prefixes     = ["10.0.1.0/24"]
@@ -18,7 +18,7 @@ resource "azurerm_subnet" "subnet_1" {
 
 # Subnet #2 for IGW
 resource "azurerm_subnet" "subnet_2" {
-  name                 = "subnet-2"
+  name                 = "subnet_2"
   virtual_network_name = azurerm_virtual_network.vnet.name
   resource_group_name  = azurerm_resource_group.azure-project.name
   address_prefixes     = ["10.0.2.0/24"]
@@ -26,11 +26,13 @@ resource "azurerm_subnet" "subnet_2" {
 
 # Subnet #3 for SS
 resource "azurerm_subnet" "subnet_3" {
-  name                 = "subnet-3"
+  name                 = "subnet_3"
   virtual_network_name = azurerm_virtual_network.vnet.name
   resource_group_name  = azurerm_resource_group.azure-project.name
   address_prefixes     = ["10.0.3.0/24"]
 }
+
+# -----------------------------------------------------------------------
 
 # Public IP for NIC
 resource "azurerm_public_ip" "pub_nic" {
