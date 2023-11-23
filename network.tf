@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "vnet" {
   address_space       = ["10.0.0.0/16"]
 }
 
-# Subnet #1 for NSG
+# Subnet #1 for Network Security Group
 resource "azurerm_subnet" "subnet_1" {
   name                 = "subnet_1"
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -16,7 +16,7 @@ resource "azurerm_subnet" "subnet_1" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-# Subnet #2 for IGW
+# Subnet #2 for Internet Gateway
 resource "azurerm_subnet" "subnet_2" {
   name                 = "subnet_2"
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -24,7 +24,7 @@ resource "azurerm_subnet" "subnet_2" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-# Subnet #3 for SS
+# Subnet #3 for Scale Set
 resource "azurerm_subnet" "subnet_3" {
   name                 = "subnet_3"
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -34,7 +34,7 @@ resource "azurerm_subnet" "subnet_3" {
 
 # -----------------------------------------------------------------------
 
-# Public IP for NIC
+# Public IP for Network Interface
 resource "azurerm_public_ip" "pub_nic" {
   name                = "PublicIPForNIC"
   location            = var.location
@@ -109,7 +109,7 @@ resource "azurerm_subnet_network_security_group_association" "nsg-sub" {
 
 # -----------------------------------------------------------------------
 
-# Public IP for IGW
+# Public IP for Internet Gateway
 resource "azurerm_public_ip" "igw_ip" {
   name                = "test"
   location            = var.location
@@ -167,7 +167,7 @@ resource "azurerm_lb_backend_address_pool" "example" {
   name            = "BackEndAddressPool"
 }
 
-# Load Balancer Rule: HTTP
+# Load Balancer - Rule - HTTP
 resource "azurerm_lb_rule" "http" {
   loadbalancer_id                = azurerm_lb.example.id
   name                           = "http"
@@ -179,7 +179,7 @@ resource "azurerm_lb_rule" "http" {
   probe_id                       = azurerm_lb_probe.http.id
 }
 
-# Load Balancer Rule: SSH
+# Load Balancer - Rule - SSH
 resource "azurerm_lb_rule" "ssh" {
   loadbalancer_id                = azurerm_lb.example.id
   name                           = "ssh"
@@ -191,7 +191,7 @@ resource "azurerm_lb_rule" "ssh" {
   probe_id                       = azurerm_lb_probe.ssh.id
 }
 
-# Load Balancer Probe: HTTP
+# Load Balancer - Probe - HTTP
 resource "azurerm_lb_probe" "http" {
   loadbalancer_id     = azurerm_lb.example.id
   name                = "http-running-probe"
@@ -202,7 +202,7 @@ resource "azurerm_lb_probe" "http" {
   interval_in_seconds = 5
 }
 
-# Load Balancer Probe: SSH
+# Load Balancer - Probe - SSH
 resource "azurerm_lb_probe" "ssh" {
   loadbalancer_id     = azurerm_lb.example.id
   name                = "ssh-running-probe"
