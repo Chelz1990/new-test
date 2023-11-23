@@ -143,15 +143,39 @@ resource "azurerm_lb_backend_address_pool" "example" {
   name            = "BackEndAddressPool"
 }
 
-# Load Balancer Rule
-resource "azurerm_lb_rule" "example" {
+# Load Balancer Rule: HTTP
+resource "azurerm_lb_rule" "http" {
   loadbalancer_id                = azurerm_lb.example.id
-  name                           = "LBRule"
+  name                           = "http"
   protocol                       = "Tcp"
   frontend_port                  = 80
   backend_port                   = 80
   frontend_ip_configuration_name = "PublicIPAddress"
-  backend_address_pool_ids       = azurerm_lb_backend_address_pool.example.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.example.id]
+  probe_id                       = azurerm_lb.probe.example.id
+}
+
+# Load Balancer Rule: SSH
+resource "azurerm_lb_rule" "ssh" {
+  loadbalancer_id                = azurerm_lb.example.id
+  name                           = "ssh"
+  protocol                       = "Tcp"
+  frontend_port                  = 22
+  backend_port                   = 22
+  frontend_ip_configuration_name = "PublicIPAddress"
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.example.id]
+  probe_id                       = azurerm_lb.probe.example.id
+}
+
+# Load Balancer Probe
+resource "azurerm_lb_probe" "example" {
+  loadbalancer_id     = azurerm_lb.example.id
+  name                = "ssh-running-probe"
+  port                = 80
+  protocol            = "http"
+  request_path        = "/index.html"
+  number_of_probes    = 3
+  interval_in_seconds = 5
 }
 
 # -----------------------------------------------------------------------
@@ -182,7 +206,7 @@ resource "azurerm_traffic_manager_azure_endpoint" "endpoint" {
   name               = "endpoint"
   profile_id         = azurerm_traffic_manager_profile.traffic_profile8250.id
   weight             = 100
-  target_resource_id = azurerm_public_ip.public_ip.id
+  target_resource_id = azurerm_public_ip.example.id
 }
 
 # -----------------------------------------------------------------------

@@ -8,6 +8,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vm_ss" {
   admin_username      = "adminuser"
   admin_password      = "pa$$w0rd"
   custom_data         = filebase64("wordpress.sh")
+  health_probe_id     = azurerm_lb_probe.example
 
 
   admin_ssh_key {
@@ -35,7 +36,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "vm_ss" {
       name                                   = "subnet_3"
       primary                                = true
       subnet_id                              = azurerm_subnet.subnet_3.id
-      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.bepool.id]
+      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.example]
     }
   }
+
+  automatic_instance_repair {
+    enabled      = true
+    grace_period = "PT10M"
+  }
+
 }
