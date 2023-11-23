@@ -99,11 +99,23 @@ resource "azurerm_network_security_group" "nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+
+    security_rule {
+    name                       = "allow-outbound"
+    priority                   = 103
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "Internet"
+  }
 }
 
 # Network Security Group & Subnet #1 Association
 resource "azurerm_subnet_network_security_group_association" "nsg-sub" {
-  subnet_id                 = azurerm_subnet.subnet_1.id
+  subnet_id                 = azurerm_subnet.subnet_3.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
