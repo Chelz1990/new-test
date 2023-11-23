@@ -8,8 +8,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vm_ss" {
   admin_username      = "adminuser"
   admin_password      = "pa$$w0rd"
   custom_data         = filebase64("wordpress.sh")
-  health_probe_id     = azurerm_lb_probe.example
-
+  health_probe_id     = azurerm_lb_probe.http
 
   admin_ssh_key {
     username   = "adminuser"

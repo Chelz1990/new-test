@@ -32,6 +32,20 @@ resource "azurerm_subnet" "subnet_3" {
   address_prefixes     = ["10.0.3.0/24"]
 }
 
+# Virtual Network Interface
+resource "azurerm_network_interface" "example" {
+  name                = "example-nic"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.azure-project.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.example.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.example.id
+  }
+}
+
 # -----------------------------------------------------------------------
 
 # Network Security Group
@@ -152,7 +166,7 @@ resource "azurerm_lb_rule" "http" {
   backend_port                   = 80
   frontend_ip_configuration_name = "PublicIPAddress"
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.example.id]
-  probe_id                       = azurerm_lb.probe.example.id
+  probe_id                       = azurerm_lb_probe.http.id
 }
 
 # Load Balancer Rule: SSH
@@ -164,15 +178,26 @@ resource "azurerm_lb_rule" "ssh" {
   backend_port                   = 22
   frontend_ip_configuration_name = "PublicIPAddress"
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.example.id]
-  probe_id                       = azurerm_lb.probe.example.id
+  probe_id                       = azurerm_lb_probe.ssh.id
 }
 
-# Load Balancer Probe
-resource "azurerm_lb_probe" "example" {
+# Load Balancer Probe: HTTP
+resource "azurerm_lb_probe" "http" {
   loadbalancer_id     = azurerm_lb.example.id
-  name                = "ssh-running-probe"
+  name                = "http-running-probe"
   port                = 80
   protocol            = "http"
+  request_path        = "/index.html"
+  number_of_probes    = 3
+  interval_in_seconds = 5
+}
+
+# Load Balancer Probe: SSH
+resource "azurerm_lb_probe" "ssh" {
+  loadbalancer_id     = azurerm_lb.example.id
+  name                = "ssh-running-probe"
+  port                = 22
+  protocol            = "ssh"
   request_path        = "/index.html"
   number_of_probes    = 3
   interval_in_seconds = 5
