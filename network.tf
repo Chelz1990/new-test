@@ -17,8 +17,8 @@ resource "azurerm_subnet" "subnet_1" {
 }
 
 # Subnet #2 for Internet Gateway
-resource "azurerm_subnet" "subnet_2" {
-  name                 = "subnet_2"
+resource "azurerm_subnet" "igw_subnet" {
+  name                 = "igw-subnet"
   virtual_network_name = azurerm_virtual_network.vnet.name
   resource_group_name  = azurerm_resource_group.azure-project.name
   address_prefixes     = ["10.0.2.0/24"]
@@ -135,7 +135,7 @@ resource "azurerm_virtual_network_gateway" "igw" {
     name                          = "vnetGatewayConfig"
     public_ip_address_id          = azurerm_public_ip.igw_ip.id
     private_ip_address_allocation = "Dynamic"
-    subnet_id                     = azurerm_subnet.subnet_2.id
+    subnet_id                     = azurerm_subnet.igw_subnet.id
   }
 }
 
@@ -197,17 +197,6 @@ resource "azurerm_lb_probe" "http" {
   name                = "http-running-probe"
   port                = 80
   protocol            = "Http"
-  request_path        = "/index.html"
-  number_of_probes    = 3
-  interval_in_seconds = 5
-}
-
-# Load Balancer - Probe - SSH
-resource "azurerm_lb_probe" "ssh" {
-  loadbalancer_id     = azurerm_lb.example.id
-  name                = "ssh-running-probe"
-  port                = 22
-  protocol            = "Tcp"
   request_path        = "/index.html"
   number_of_probes    = 3
   interval_in_seconds = 5
