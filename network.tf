@@ -159,7 +159,7 @@ resource "azurerm_lb_rule" "http" {
 resource "azurerm_lb_rule" "ssh" {
   loadbalancer_id                = azurerm_lb.example.id
   name                           = "ssh"
-  protocol                       = "Tcp"
+  protocol                       = "ssh"
   frontend_port                  = 22
   backend_port                   = 22
   frontend_ip_configuration_name = "PublicIPAddress"
