@@ -35,7 +35,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vm_ss" {
       name                                   = "subnet_3"
       primary                                = true
       subnet_id                              = azurerm_subnet.subnet_3.id
-      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.example]
+      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.example.id]
     }
   }
 
