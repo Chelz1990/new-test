@@ -193,6 +193,33 @@ resource "azurerm_lb_probe" "http" {
 
 # -----------------------------------------------------------------------
 
+# Traffic Manager Profile for Load Balancing
+resource "azurerm_traffic_manager_profile" "traffic_profile8250" {
+  name                   = "traffic-profile8250"
+  resource_group_name    = azurerm_resource_group.azure-project.name
+  traffic_routing_method = "Priority"
 
+  dns_config {
+    relative_name = "traffic-profile8250"
+    ttl           = 100
+  }
+
+  monitor_config {
+    protocol                     = "HTTP"
+    port                         = 80
+    path                         = "/"
+    interval_in_seconds          = 30
+    timeout_in_seconds           = 9
+    tolerated_number_of_failures = 3
+  }
+}
+
+# End-Point for Traffic Manager
+resource "azurerm_traffic_manager_azure_endpoint" "endpoint" {
+  name               = "endpoint"
+  profile_id         = azurerm_traffic_manager_profile.traffic_profile8250.id
+  weight             = 100
+  target_resource_id = azurerm_public_ip.example.id
+}
 
 # -----------------------------------------------------------------------
