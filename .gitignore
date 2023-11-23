@@ -1,0 +1,16 @@
+# -----------------------------------------------------------------------
+
+# Local ".terraform" Directories:
+**/.terraform/*
+
+# ".tfstate" Files:
+*.tfstate
+*.tfstate.*
+
+# Crash Log Files:
+crash.log
+
+# Unused .tf files:
+nat_gateway.tf
+
+# -----------------------------------------------------------------------
