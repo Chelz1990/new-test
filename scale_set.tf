@@ -20,7 +20,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vm_ss" {
   source_image_reference {
     publisher = "OpenLogic"
     offer     = "CentOS"
-    sku       = "7_9"
+    sku       = "8_5-gen2"
     version   = "latest"
   }
 
