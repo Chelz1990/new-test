@@ -1,3 +1,5 @@
+# -----------------------------------------------------------------------
+
 # Specify Terraform Provider and Version
 terraform {
   required_providers {
@@ -13,3 +15,5 @@ provider "azurerm" {
   skip_provider_registration = true
   features {}
 }
+
+# -----------------------------------------------------------------------

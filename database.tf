@@ -1,3 +1,5 @@
+# -----------------------------------------------------------------------
+
 # MySQL Server
 resource "azurerm_mysql_server" "wordpress" {
   name                = "project-mysql-server"
@@ -36,3 +38,5 @@ resource "azurerm_mysql_firewall_rule" "azure" {
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "255.255.255.255"
 }
+
+# -----------------------------------------------------------------------

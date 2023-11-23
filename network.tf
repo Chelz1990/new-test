@@ -99,18 +99,6 @@ resource "azurerm_network_security_group" "nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
-
-    security_rule {
-    name                       = "allow-outbound"
-    priority                   = 103
-    direction                  = "Outbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "Internet"
-  }
 }
 
 # Network Security Group & Subnet #1 Association
@@ -189,7 +177,7 @@ resource "azurerm_lb_rule" "http" {
   backend_port                   = 80
   frontend_ip_configuration_name = "Public-IP"
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.example.id]
-  probe_id                       = azurerm_lb_probe.http.id
+  probe_id                       = [azurerm_lb_probe.http.id]
 }
 
 # Load Balancer - Probe - HTTP
