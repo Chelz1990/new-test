@@ -5,7 +5,7 @@ resource "azurerm_virtual_network" "vnet" {
   name                = "vnet"
   location            = var.location
   resource_group_name = azurerm_resource_group.azure-project.name
-  address_space       = ["10.0.0.0/16"]
+  address_space       = ["103.0.0.0/16"]
 }
 
 # Subnet #1 for Nothing
