@@ -1,5 +1,3 @@
-# ---------------------------------------------------------------------------
-
 ### Project #1. Misrosoft Azure
 
 1. Chelsea Woods
@@ -26,5 +24,3 @@ This module should be able to create resource group. Once the VPC module is read
 ### Step #3
 
 - Azure MySQL to use with Wordpress Autoscaling Group.
-
-# ---------------------------------------------------------------------------
