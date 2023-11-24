@@ -25,8 +25,9 @@ resource "azurerm_linux_virtual_machine_scale_set" "vm_ss" {
   }
 
   network_interface {
-    name    = "example-nic"
+    name    = "example"
     primary = true
+    network_security_group_id = azurerm_network_security_group.nsg.id
 
     ip_configuration {
       name                                   = "IP-Config"

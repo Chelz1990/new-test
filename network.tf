@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "vnet" {
   address_space       = ["10.0.0.0/16"]
 }
 
-# Subnet #1 for Network Interface
+# Subnet #1 for Nothing
 resource "azurerm_subnet" "subnet_1" {
   name                 = "subnet_1"
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -138,6 +138,8 @@ resource "azurerm_public_ip" "example" {
   location            = var.location
   resource_group_name = azurerm_resource_group.azure-project.name
   allocation_method   = "Dynamic"
+  sku                 = "Standard"
+  zones               = ["1", "2", "3"]
   domain_name_label   = azurerm_resource_group.azure-project.name
 }
 
@@ -211,6 +213,75 @@ resource "azurerm_traffic_manager_azure_endpoint" "endpoint" {
   profile_id         = azurerm_traffic_manager_profile.traffic_profile8250.id
   weight             = 100
   target_resource_id = azurerm_public_ip.example.id
+}
+
+# ---------------------------------------------------------------------------
+
+# Public IP for NAT Gateway
+resource "azurerm_public_ip" "natgwip" {
+  name                = "natgw-publicIP"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.azure-project.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  zones               = ["1"]
+}
+
+# NAT Gateway
+resource "azurerm_nat_gateway" "example" {
+  name                    = "NAT-Gateway"
+  location                = var.location
+  resource_group_name     = azurerm_resource_group.azure-project.name
+  sku_name                = "Standard"
+  idle_timeout_in_minutes = 10
+  zones                   = ["1"]
+}
+
+# NAT Gateway & Subnet #1 Association
+resource "azurerm_subnet_nat_gateway_association" "example" {
+  subnet_id      = azurerm_subnet.subnet_1.id
+  nat_gateway_id = azurerm_nat_gateway.example.id
+}
+
+# NAT Gateway & Public IP Association
+resource "azurerm_nat_gateway_public_ip_association" "example" {
+  nat_gateway_id       = azurerm_nat_gateway.example.id
+  public_ip_address_id = azurerm_public_ip.natgwip.id
+}
+
+# NAT Gateway - Outbound traffic from the Back-End
+resource "azurerm_nat_gateway" "nat_gateway" {
+  name                    = "NAT-Gateway"
+  location                = var.location
+  resource_group_name     = azurerm_resource_group.azure-project.name
+  sku_name                = "Standard"
+  idle_timeout_in_minutes = 10
+  zones                   = ["1"]
+}
+
+# Load Balancer - NAT Gateway - Rules - Allow SSH to Back-End
+resource "azurerm_lb_nat_rule" "ssh" {
+  name                           = "ssh"
+  resource_group_name            = azurerm_resource_group.azure-project.name
+  loadbalancer_id                = azurerm_lb.example.id
+  protocol                       = "Tcp"
+  frontend_port_start            = 80
+  frontend_port_end              = 80
+  backend_port                   = 22
+  frontend_ip_configuration_name = "Public-IP"
+  backend_address_pool_id        = azurerm_lb_backend_address_pool.example.id
+}
+
+# NAT Gateway (Back-End)
+resource "azurerm_lb_nat_pool" "example" {
+  resource_group_name            = azurerm_resource_group.azure-project.name
+  loadbalancer_id                = azurerm_lb.example.id
+  name                           = "SampleApplicationPool"
+  protocol                       = "Tcp"
+  frontend_port_start            = 80
+  frontend_port_end              = 80
+  backend_port                   = 8080
+  frontend_ip_configuration_name = "Public-IP"
 }
 
 # ---------------------------------------------------------------------------
