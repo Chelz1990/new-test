@@ -34,14 +34,6 @@ resource "azurerm_subnet" "subnet_3" {
 
 # ---------------------------------------------------------------------------
 
-# Public IP for Network Interface
-resource "azurerm_public_ip" "pub_nic" {
-  name                = "PublicIPForNIC"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.azure-project.name
-  allocation_method   = "Static"
-}
-
 # Virtual Network Interface
 resource "azurerm_network_interface" "example" {
   name                = "example-nic"
@@ -52,7 +44,6 @@ resource "azurerm_network_interface" "example" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.subnet_1.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.pub_nic.id
   }
 }
 
