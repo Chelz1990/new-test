@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "vnet" {
   address_space       = ["10.0.0.0/16"]
 }
 
-# Subnet #1 for Network Security Group
+# Subnet #1 for Network Interface
 resource "azurerm_subnet" "subnet_1" {
   name                 = "subnet_1"
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -56,7 +56,7 @@ resource "azurerm_network_security_group" "nsg" {
   resource_group_name = azurerm_resource_group.azure-project.name
 
   security_rule {
-    name                       = "allow-http"
+    name                       = "Allow-HTTP"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
@@ -68,7 +68,7 @@ resource "azurerm_network_security_group" "nsg" {
   }
 
   security_rule {
-    name                       = "allow-https"
+    name                       = "Allow-HTTPS"
     priority                   = 101
     direction                  = "Inbound"
     access                     = "Allow"
@@ -80,7 +80,7 @@ resource "azurerm_network_security_group" "nsg" {
   }
 
   security_rule {
-    name                       = "allow-ssh"
+    name                       = "Allow-SSH"
     priority                   = 102
     direction                  = "Inbound"
     access                     = "Allow"
@@ -92,7 +92,7 @@ resource "azurerm_network_security_group" "nsg" {
   }
 }
 
-# Network Security Group & Subnet #1 Association
+# Network Security Group & Subnet #3 Association
 resource "azurerm_subnet_network_security_group_association" "nsg-sub" {
   subnet_id                 = azurerm_subnet.subnet_3.id
   network_security_group_id = azurerm_network_security_group.nsg.id
