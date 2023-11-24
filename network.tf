@@ -102,7 +102,7 @@ resource "azurerm_subnet_network_security_group_association" "nsg-sub" {
 
 # Public IP for Internet Gateway
 resource "azurerm_public_ip" "igw_ip" {
-  name                = "test"
+  name                = "IGW-IP"
   location            = var.location
   resource_group_name = azurerm_resource_group.azure-project.name
 
