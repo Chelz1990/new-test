@@ -10,7 +10,4 @@
 # Crash Log Files:
 crash.log
 
-# Unused .tf files:
-nat_gateway.tf
-
 # ---------------------------------------------------------------------------
