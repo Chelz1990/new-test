@@ -35,11 +35,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "vm_ss" {
       primary                                = true
       subnet_id                              = azurerm_subnet.subnet_3.id
       load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.example.id]
-       dynamic "public_ip_address" {
-        for_each = azurerm_public_ip.example.id ? [1] : []
-        content {
-          name = "pip"
-        }
+
+      dynamic "public_ip_address" {
+        for_each = azurerm_public_ip.example.id
+        content { name = "pip" }
+      }
     }
   }
 }
