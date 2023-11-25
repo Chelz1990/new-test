@@ -3,7 +3,7 @@
 # Resource Group
 resource "azurerm_resource_group" "azure-project" {
   name     = var.name
-  location = "east us"
+  location = var.location
 }
 
 # ---------------------------------------------------------------------------
