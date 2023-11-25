@@ -213,3 +213,18 @@ resource "azurerm_traffic_manager_azure_endpoint" "endpoint" {
 }
 
 # ---------------------------------------------------------------------------
+
+# Create Route Table
+
+resource "azurerm_route_table" "route_table" {
+  name                          = "test-routetable"
+  location                      = azurerm_resource_group.azure-project.location
+  resource_group_name           = azurerm_resource_group.azure-project.name
+  disable_bgp_route_propagation = false
+
+  route {
+    name           = "routetable"
+    address_prefix = "10.0.0.0/16"
+    next_hop_type  = "VnetLocal"
+  }
+}
