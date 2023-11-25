@@ -54,42 +54,65 @@ resource "azurerm_network_security_group" "nsg" {
   name                = "nsg"
   location            = var.location
   resource_group_name = azurerm_resource_group.azure-project.name
+    
+#    security_rule {
+#    name                       = "connect"
+#    priority                   = 100
+#    direction                  = "Inbound"
+#    access                     = "Allow"
+#    protocol                   = "*"
+#    source_port_range          = "*"
+#    destination_port_range     = "*"
+#    source_address_prefix      = "*"
+#    destination_address_prefix = "*"
 
-  security_rule {
-    name                       = "Allow-HTTP"
-    priority                   = 100
+    security_rule {
+    name                       = "ssh"
+    priority                   = 110
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "*"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }    
+
+    security_rule {
+    name                       = "http"
+    priority                   = 120
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "80"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
 
-  security_rule {
-    name                       = "Allow-HTTPS"
-    priority                   = 101
+    security_rule {
+    name                       = "https"
+    priority                   = 130
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "*"
+    protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "443"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "Allow-SSH"
-    priority                   = 102
+  }     
+     
+    security_rule {
+    name                       = "mysql"
+    priority                   = 140
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "*"
+    protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "22"
+    destination_port_range     = "3306"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
-  }
+  }          
 }
 
 # Network Security Group & Subnet #3 Association
@@ -217,13 +240,13 @@ resource "azurerm_traffic_manager_azure_endpoint" "endpoint" {
 # Create Route Table
 
 resource "azurerm_route_table" "route_table" {
-  name                          = "test-routetable"
-  location                      = azurerm_resource_group.azure-project.location
+  name                          = "nrt"
+  location                      = var.location
   resource_group_name           = azurerm_resource_group.azure-project.name
   disable_bgp_route_propagation = false
 
   route {
-    name           = "routetable"
+    name           = "vm-route-table"
     address_prefix = "10.0.0.0/16"
     next_hop_type  = "VnetLocal"
   }
